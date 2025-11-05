@@ -5,14 +5,41 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles, RisingEdge
 
+import numpy as np
+import scipy.io.wavfile
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
 FREQ = 8000
+
+
+async def collect_samples(dut, count):
+    """Collect output samples."""
+
+    def collect_samples_generator():
+        for i in range(count):
+            await RisingEdge(dut.clk) # wait for first clock edge
+            yield dut.uo_out
+
+    df = pd.DataFrame.from_records(zip(range(count), sample_generator()), columns=['t', 'out0'], index=['t'])
+    df.plot()
+    plt.savefig('tb.png')
+    samples = df['out0'][:]
+    scipy.io.wavfile.write('tb.wav', 8000, samples.to_numpy(dtype=np.uint8))
+
 
 @cocotb.test()
 async def test_bytebeat(dut):
-    dut._log.info("start")
+    dut._log.info("Start")
+
+    cocotb.start_soon(collect_samples(dut, 131072))  # collect samples "in the background"
+
+    # Set the clock to 8000hz
     clock = Clock(dut.clk, (1.0/FREQ), units="sec")
     cocotb.start_soon(clock.start())
-    await RisingEdge(dut.clk) # wait for first clock edge
+
+    dut.ena.value = 1 # enable project
     dut.rst_n.value = 0 # low to reset
     dut.ui_in.value = 0x57  # a=5 b=7
     dut.uio_in.value = 0x3a # c=3 d=10
