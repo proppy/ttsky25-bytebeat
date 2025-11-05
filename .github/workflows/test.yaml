@@ -60,5 +60,7 @@ jobs:
           name: test-vcd
           path: |
             test/tb.vcd
+            test/tb.wav
+            test/tb.png
             test/results.xml
             test/output/*
