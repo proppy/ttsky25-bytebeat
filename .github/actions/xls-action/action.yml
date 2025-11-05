@@ -1,5 +1,8 @@
 name: XLS
 description: generate (System)Verilog from DSLX.
+env:
+  XLS_VERSION: v0.0.0-8961-gf509bf088
+
 inputs:
   dslx-path:
     description: path to the input DSLX path.
