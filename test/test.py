@@ -19,9 +19,9 @@ async def collect_samples(dut, count):
         await RisingEdge(dut.clk) # wait for first clock edge
         try:
             s = dut.uo_out.value.to_unsigned()
+            yield (i, s)
         except ValueError:
             pass  # ignore invalid samples
-        yield (i, s)
 
 
 async def write_wavefile(dut):
