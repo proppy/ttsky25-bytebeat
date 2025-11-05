@@ -53,6 +53,14 @@ jobs:
       - name: GL test
         uses: TinyTapeout/tt-gds-action/gl_test@ttsky25b
 
+      - name: upload audio wave
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-wav
+          path: |
+            test/tb.wav
+            test/tb.png
+
   viewer:
     needs: gds
     runs-on: ubuntu-24.04
