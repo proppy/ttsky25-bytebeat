@@ -16,8 +16,10 @@ jobs:
         run: |
           ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
       - name: optimize XLS IR
+        run: |
           opt_main bytebeat.ir > bytebeat_opt.ir
       - name: generate Verilog
+        run: |
           codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset bytebeat_opt.ir > bytebeat.v
 
   gds:
