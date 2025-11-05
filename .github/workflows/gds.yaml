@@ -12,15 +12,16 @@ jobs:
         run: |
           XLS_VERSION=v0.0.0-8955-g2a0139ecc
           curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf - --strip-components=1
+          echo "::core.addPath xls-${XLS_VERSION}-linux-x64"
       - name: convert DSLX to XLS ir
         run: |
-          ./ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
+          ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
       - name: optimize XLS IR
         run: |
-          ./opt_main bytebeat.ir > bytebeat_opt.ir
+          opt_main bytebeat.ir > bytebeat_opt.ir
       - name: generate Verilog
         run: |
-          ./codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset bytebeat_opt.ir > bytebeat.v
+          codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset bytebeat_opt.ir > bytebeat.v
 
   gds:
     needs: xls
