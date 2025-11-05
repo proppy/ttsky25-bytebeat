@@ -45,11 +45,19 @@ jobs:
         with:
           submodules: recursive
 
-      - name: download XLS artifacts
-        uses: actions/download-artifact@v4
+      - name: Generate Verilog from DSLX
+        uses: ./xls.yaml
         with:
-          name: xls-generated
-          path: src/
+          dslx-path: src/bytebeat.x
+          dslx-top: bytebeat
+          ir-path: src/bytebeat.ir
+          opt-ir-path: src/bytebeat.opt.ir
+          verilog-path: src/bytebeat.v
+          verilog-module-name: bytebeat
+          verilog-reset-signal-name: reset
+          use-system-verilog: false
+          clock-period-ps: 125000000
+          delay-model: unit
 
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@ttsky25b
