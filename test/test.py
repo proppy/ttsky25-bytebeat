@@ -17,7 +17,11 @@ FREQ = 8000
 async def collect_samples(dut, count):
     for i in range(count):
         await RisingEdge(dut.clk) # wait for first clock edge
-        yield (i, dut.uo_out.value.integer)
+        try:
+            s = dut.uo_out.value.to_unsigned()
+        except ValueError:
+            pass  # ignore invalid samples
+        yield (i, s)
 
 
 async def write_wavefile(dut):
