@@ -6,7 +6,7 @@ SIM ?= icarus
 WAVES ?= 1
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = tt_um_proppy_bytebeat.v bytebeat.v
 
 ifneq ($(GATES),yes)
 
