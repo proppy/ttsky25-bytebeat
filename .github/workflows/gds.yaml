@@ -13,7 +13,7 @@ jobs:
           XLS_VERSION=v0.0.0-8955-g2a0139ecc
           curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf - --strip-components=1
           XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
-          echo "::addPath $XLS_PATH"
+          echo "::addPath inputPath=$XLS_PATH"
       - name: convert DSLX to XLS ir
         run: |
           ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
