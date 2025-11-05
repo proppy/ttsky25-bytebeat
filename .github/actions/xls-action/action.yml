@@ -69,7 +69,7 @@ runs:
       shell: bash
     - name: generate Verilog
       run: |
-        codegen_main --module_name=${{ inputs.verilog-module-name }} --use_system_verilog=${{ inputs.use-system-verilog }} --clock_period_ps=${{ inputs.clock-period }} --delay_model==${{ inputs.delay-model }} --reset=${{ inputs.verilog-reset-signal-name }} ${{ inputs.opt-ir-path }} > ${{ inputs.verilog-path }}
+        codegen_main --module_name=${{ inputs.verilog-module-name }} --use_system_verilog=${{ inputs.use-system-verilog }} --clock_period_ps=${{ inputs.clock-period-ps }} --delay_model==${{ inputs.delay-model }} --reset=${{ inputs.verilog-reset-signal-name }} ${{ inputs.opt-ir-path }} > ${{ inputs.verilog-path }}
       shell: bash
     - name: upload XLS artifacts
       uses: actions/upload-artifact@v4
