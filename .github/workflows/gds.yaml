@@ -5,7 +5,23 @@ on:
   workflow_dispatch:
 
 jobs:
+  xls:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: install XLS
+        run: |
+          XLS_VERSION=v0.0.0-8955-g2a0139ecc
+          curl --show-error -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xzf - --strip-components=1
+      - name: convert DSLX to XLS ir
+        run: |
+          ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
+      - name: optimize XLS IR
+          opt_main bytebeat.ir > bytebeat_opt.ir
+      - name: generate Verilog
+          codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset bytebeat_opt.ir > bytebeat.v
+
   gds:
+    needs: xls
     runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
