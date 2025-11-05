@@ -15,9 +15,10 @@ FREQ = 8000
 
 
 async def collect_samples(dut, count):
-        for i in range(count):
-            await RisingEdge(dut.clk) # wait for first clock edge
-            yield (i, dut.uo_out)
+    for i in range(count):
+        await RisingEdge(dut.clk) # wait for first clock edge
+        yield (i, dut.uo_out.value)
+
 
 async def write_wavefile(dut):
     """Write a wavefile corresponding to the outputs."""
@@ -33,7 +34,7 @@ async def write_wavefile(dut):
 async def test_bytebeat(dut):
     dut._log.info("Start")
 
-    cocotb.start_soon(collect_samples(dut, 131072))  # collect samples "in the background"
+    cocotb.start_soon(write_wavefile(dut, 131072))  # collect samples "in the background"
 
     # Set the clock to 8000hz
     clock = Clock(dut.clk, (1.0/FREQ), units="sec")
