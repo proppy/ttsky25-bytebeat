@@ -8,20 +8,22 @@ jobs:
   xls:
     runs-on: ubuntu-24.04
     env:
-      XLS_VERSION: v0.0.0-8955-g2a0139ecc
+      XLS_VERSION=v0.0.0-8955-g2a0139ecc
     steps:
       - name: install XLS
         run: |
-          curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf - --strip-components=1
+          curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf - XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
+          XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
+          echo "$XLS_PATH" >> "$GITHUB_PATH"
       - name: convert DSLX to XLS ir
         run: |
-          xls-${XLS_VERSION}-linux-x64/ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
+          ir_converter_main --top=bytebeat bytebeat.x > bytebeat.ir
       - name: optimize XLS IR
         run: |
-          xls-${XLS_VERSION}-linux-x64/opt_main bytebeat.ir > bytebeat_opt.ir
+          opt_main bytebeat.ir > bytebeat_opt.ir
       - name: generate Verilog
         run: |
-          xls-${XLS_VERSION}-linux-x64/codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset bytebeat_opt.ir > bytebeat.v
+          codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset bytebeat_opt.ir > bytebeat.v
 
   gds:
     needs: xls
