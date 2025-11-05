@@ -50,6 +50,10 @@ jobs:
         with:
           name: xls-artifacts
 
+      - name: debug
+        run: |
+          find .
+
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@ttsky25b
         with:
