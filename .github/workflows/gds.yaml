@@ -49,10 +49,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: xls-artifacts
-
-      - name: debug
-        run: |
-          find .
+          path: src/
 
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@ttsky25b
