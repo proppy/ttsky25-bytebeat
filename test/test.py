@@ -15,14 +15,14 @@ FREQ = 8000
 
 
 async def collect_samples(dut, count):
-    """Collect output samples."""
-
-    def collect_samples_generator():
         for i in range(count):
             await RisingEdge(dut.clk) # wait for first clock edge
-            yield dut.uo_out
+            yield (i, dut.uo_out)
 
-    df = pd.DataFrame.from_records(zip(range(count), sample_generator()), columns=['t', 'out0'], index=['t'])
+async def write_wavefile(dut):
+    """Write a wavefile corresponding to the outputs."""
+    samples = [s in async for i in collect_samples(dut, 65536*2)]
+    df = pd.DataFrame.from_records(samples, columns=['t', 'out0'], index=['t'])
     df.plot()
     plt.savefig('tb.png')
     samples = df['out0'][:]
