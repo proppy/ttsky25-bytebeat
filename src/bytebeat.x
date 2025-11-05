@@ -24,7 +24,8 @@ proc bytebeat {
     (a_r, b_r, c_r, d_r, output_s)
   }
 
-  next(tok: token, state: ByteBeatState) {
+  next(state: ByteBeatState) {
+    let tok = token();
     let (tok_a, a, _) = recv_non_blocking(tok, a_r, state.a);
     let (tok_b, b, _) = recv_non_blocking(tok, b_r, state.b);
     let (tok_c, c, _) = recv_non_blocking(tok, c_r, state.c);
