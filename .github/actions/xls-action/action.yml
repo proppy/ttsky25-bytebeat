@@ -53,20 +53,24 @@ runs:
       run: |
         curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf -
         echo "$(readlink -f xls-${XLS_VERSION}-linux-x64)" >> "$GITHUB_PATH"
+      shell: bash
     - name: convert DSLX to XLS ir
       run: |
-        ir_converter_main --top=${{input.dslx-top}} ${{ input.dslx-path }} > ${{ input.ir-path }}
+        ir_converter_main --top=${{ inputs.dslx-top}} ${{ inputs.dslx-path }} > ${{ inputs.ir-path }}
+      shell: bash        
     - name: optimize XLS IR
       run: |
-        opt_main ${{ input.ir-path }} > ${{ input.opt-ir-path }}
+        opt_main ${{ inputs.ir-path }} > ${{ inputs.opt-ir-path }}
+      shell: bash        
     - name: generate Verilog
       run: |
-        codegen_main --module_name=${{ input.verilog-module-name }} --use_system_verilog=${{ input.use-system-verilog }} --clock_period_ps=${{ input.clock-period }} --delay_model==${{ input.delay-model }} --reset=${{ input.verilog-reset-signal-name }} ${{ input.opt-ir-path }} > ${{ input.verilog-path }}
+        codegen_main --module_name=${{ inputs.verilog-module-name }} --use_system_verilog=${{ inputs.use-system-verilog }} --clock_period_ps=${{ inputs.clock-period }} --delay_model==${{ inputs.delay-model }} --reset=${{ inputs.verilog-reset-signal-name }} ${{ inputs.opt-ir-path }} > ${{ inputs.verilog-path }}
+      shell: bash        
     - name: upload XLS artifacts
       uses: actions/upload-artifact@v4
       with:
         name: xls-generated
         path: |
-          ${{ input.ir-path }}
-          ${{ input.opt-ir-path }}
-          ${{ input.verilog-path }}
+          ${{ inputs.ir-path }}
+          ${{ inputs.opt-ir-path }}
+          ${{ inputs.verilog-path }}
