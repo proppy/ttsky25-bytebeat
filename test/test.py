@@ -21,7 +21,7 @@ async def collect_samples(dut, count):
 
 async def write_wavefile(dut):
     """Write a wavefile corresponding to the outputs."""
-    samples = [s in async for i in collect_samples(dut, 65536*2)]
+    samples = [s async for i in collect_samples(dut, 65536*2)]
     df = pd.DataFrame.from_records(samples, columns=['t', 'out0'], index=['t'])
     df.plot()
     plt.savefig('tb.png')
