@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: install XLS
         run: |
-          curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf - XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
+          curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf -
           XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
           echo "::addPath $XLS_PATH"
       - name: convert DSLX to XLS ir
