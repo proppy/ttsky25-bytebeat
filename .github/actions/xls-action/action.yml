@@ -1,9 +1,11 @@
 name: XLS
 description: generate (System)Verilog from DSLX.
-env:
-  XLS_VERSION: v0.0.0-8961-gf509bf088
 
 inputs:
+  xls-version:
+    description: version of the XLS release to use.
+    required: true
+    type: string
   dslx-path:
     description: path to the input DSLX path.
     required: true
@@ -54,8 +56,8 @@ runs:
   steps:
     - name: install XLS
       run: |
-        curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf -
-        echo "$(readlink -f xls-${XLS_VERSION}-linux-x64)" >> "$GITHUB_PATH"
+        curl --show-error --silent -L https://github.com/google/xls/releases/download/${{ inputs.xls-version }}/xls-${{ inputs.xls-version }}-linux-x64.tar.gz | tar xvzf -
+        echo "$(readlink -f xls-${{ inputs.xls-version }}-linux-x64)" >> "$GITHUB_PATH"
       shell: bash
     - name: convert DSLX to XLS ir
       run: |

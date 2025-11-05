@@ -17,6 +17,7 @@ jobs:
       - name: Generate Verilog from DSLX
         uses: ./.github/actions/xls-action
         with:
+          xls-version: v0.0.0-8961-gf509bf088
           dslx-path: src/bytebeat.x
           dslx-top: bytebeat
           ir-path: src/bytebeat.ir
