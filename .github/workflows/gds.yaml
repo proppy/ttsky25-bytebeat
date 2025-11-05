@@ -10,12 +10,15 @@ jobs:
     env:
       XLS_VERSION: v0.0.0-8955-g2a0139ecc
     steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
       - name: install XLS
         run: |
           curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf -
           XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
           echo "${XLS_PATH}" >> "$GITHUB_PATH"
-          find .
       - name: convert DSLX to XLS ir
         run: |
           ir_converter_main --top=bytebeat src/bytebeat.x > src/bytebeat.ir
