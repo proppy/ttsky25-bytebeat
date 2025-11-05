@@ -57,16 +57,17 @@ proc bytebeat_test {
   }
 
   config(t: chan<bool> out) {
-    let (a_s, a_r) = chan<u4>;
-    let (b_s, b_r) = chan<u4>;
-    let (c_s, c_r) = chan<u4>;
-    let (d_s, d_r) = chan<u4>;
+    let (a_s, a_r) = chan<u4>();
+    let (b_s, b_r) = chan<u4>();
+    let (c_s, c_r) = chan<u4>();
+    let (d_s, d_r) = chan<u4>();
     let (output_s, output_r) = chan<u8>;
     spawn bytebeat(a_r, b_r, c_r, d_r, output_s);
     (t, a_s, a_r, b_s, b_r, c_s, c_r, d_s, d_r, output_s, output_r)
   }
 
-  next(tok: token, state: ()) {
+  next(state: ()) {
+    let tok = token();
     let (tok, pcm) = for (i, (tok, pcm)) in u16:0..u16:0x1ff {
       let (tok, sample) = recv(tok, output_r);
       (tok, update(pcm, i, sample))
