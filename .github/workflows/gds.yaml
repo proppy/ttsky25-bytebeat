@@ -46,7 +46,7 @@ jobs:
           submodules: recursive
 
       - name: Generate Verilog from DSLX
-        uses: ./xls.yaml
+        uses: ./.github/actions/xls/action.yaml
         with:
           dslx-path: src/bytebeat.x
           dslx-top: bytebeat
