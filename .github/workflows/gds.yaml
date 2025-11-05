@@ -30,7 +30,7 @@ jobs:
       - name: upload XLS artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: xls-artifacts
+          name: xls-generated
           path: |
             src/bytebeat.ir
             src/bytebeat.opt.ir
@@ -48,7 +48,7 @@ jobs:
       - name: download XLS artifacts
         uses: actions/download-artifact@v4
         with:
-          name: xls-artifacts
+          name: xls-generated
           path: src/
 
       - name: Build GDS
