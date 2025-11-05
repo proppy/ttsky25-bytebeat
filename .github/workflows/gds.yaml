@@ -15,6 +15,7 @@ jobs:
           curl --show-error --silent -L https://github.com/google/xls/releases/download/${XLS_VERSION}/xls-${XLS_VERSION}-linux-x64.tar.gz | tar xvzf -
           XLS_PATH=$(readlink -f xls-${XLS_VERSION}-linux-x64)
           echo "${XLS_PATH}" >> "$GITHUB_PATH"
+          find .
       - name: convert DSLX to XLS ir
         run: |
           ir_converter_main --top=bytebeat src/bytebeat.x > src/bytebeat.ir
