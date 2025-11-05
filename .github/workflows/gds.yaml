@@ -21,13 +21,21 @@ jobs:
           echo "${XLS_PATH}" >> "$GITHUB_PATH"
       - name: convert DSLX to XLS ir
         run: |
-          ir_converter_main --top=bytebeat src/bytebeat.x | tee src/bytebeat.ir
+          ir_converter_main --top=bytebeat src/bytebeat.x > src/bytebeat.ir
       - name: optimize XLS IR
         run: |
-          opt_main src/bytebeat.ir | tee src/bytebeat_opt.ir
+          opt_main src/bytebeat.ir > src/bytebeat.opt.ir
       - name: generate Verilog
         run: |
-          codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset src/bytebeat_opt.ir | tee src/bytebeat.v
+          codegen_main --module_name bytebeat --use_system_verilog=false --clock_period_ps=125000000 --delay_model=unit --reset=reset src/bytebeat.opt.ir > src/bytebeat.v
+      - name: upload XLS artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: xls-artifacts
+          path: |
+            bytebeat.ir
+            bytebeat.opt.ir
+            bytebeat.v
 
   gds:
     needs: xls
@@ -37,6 +45,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+
+      - name: upload XLS artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: xls-artifacts
 
       - name: Build GDS
         uses: TinyTapeout/tt-gds-action@ttsky25b
