@@ -40,5 +40,5 @@ jobs:
           git add src/bytebeat.v
           git commit -m "src: re-generate bytebeat.v from DSLX"
           git fetch origin main
-          git rebase origin/main
+          git rebase origin/main --strategy-option ours
           git push origin ${{ github.ref_name }}:main
