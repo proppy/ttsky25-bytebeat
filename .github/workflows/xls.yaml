@@ -41,5 +41,4 @@ jobs:
           git config --global user.name "GitHub XLS workflow"
           git add src/bytebeat.v
           git commit -m "src: re-generate bytebeat.v from DSLX"
-          git push origin main
-          git push origin ttsky25b
+          git push origin "${{ github.ref_name }}"
