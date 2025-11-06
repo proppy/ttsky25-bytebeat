@@ -1,15 +1,13 @@
 name: test
 
 on:
-  push:
-    paths-ignore:
-      - src/**.x
-      - .github/workflows/xls.yaml
-      - .github/actions/xls/**
-    branches-ignore:
-      - ttsky25b
+  workflow_run:
+    workflows:
+      - xls
+    types:
+      - completed
   workflow_dispatch:
-  
+
 jobs:
   test:
     runs-on: ubuntu-24.04

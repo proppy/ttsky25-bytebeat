@@ -14,7 +14,6 @@ jobs:
   xls:
     permissions:
       contents: write
-      actions: write
     runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
