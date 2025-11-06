@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - src/**.x
+      - .github/workflows/xls.yaml
+      - .github/actions/xls/**
   workflow_dispatch:
 
 jobs:
-  gds:
+  xls:
     runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
@@ -33,6 +35,8 @@ jobs:
 
       - name: Commit generated Verilog
         run: |
+          git config --global user.email "<>
+          git config --global user.name "GitHub XLS workflow"          
           git add src/bytebeat.v
           git commit -m "src: re-generate bytebeat.v from DSLX"
           git push main
