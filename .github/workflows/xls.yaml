@@ -12,8 +12,6 @@ on:
 
 jobs:
   xls:
-    permissions:
-      contents: write
     runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
@@ -38,9 +36,11 @@ jobs:
           delay-model: unit
 
       - name: Commit generated Verilog
+        env:
+          GH_TOKEN: ${{ secrets.CODE_AND_ACTIONS_PAT }}
         run: |
           git config --global user.email "<>"
-          git config --global user.name "GitHub XLS workflow"
+          git config --global user.name "github-xls-action"
           git checkout -b main
           git add src/bytebeat.v
           git commit -m "src: re-generate bytebeat.v from DSLX"
