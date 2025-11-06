@@ -2,10 +2,6 @@ name: xls
 
 on:
   push:
-    paths:
-      - src/**.x
-      - .github/workflows/xls.yaml
-      - .github/actions/xls/**
     branches-ignore:
       - main
   workflow_dispatch:
