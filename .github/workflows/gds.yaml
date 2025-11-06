@@ -10,6 +10,7 @@ on:
 
 jobs:
   gds:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
@@ -23,6 +24,7 @@ jobs:
           pdk: sky130A
 
   precheck:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     needs: gds
     runs-on: ubuntu-24.04
     steps:
@@ -30,6 +32,7 @@ jobs:
         uses: TinyTapeout/tt-gds-action/precheck@ttsky25b
 
   gl_test:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     needs: gds
     runs-on: ubuntu-24.04
     steps:
@@ -50,6 +53,7 @@ jobs:
             test/tb.png
 
   viewer:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     needs: gds
     runs-on: ubuntu-24.04
     permissions:
