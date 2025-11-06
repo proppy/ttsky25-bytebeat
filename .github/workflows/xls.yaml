@@ -41,6 +41,7 @@ jobs:
         run: |
           git config --global user.email "<>"
           git config --global user.name "GitHub XLS workflow"
+          git checkout -b main
           git add src/bytebeat.v
           git commit -m "src: re-generate bytebeat.v from DSLX"
           git fetch origin main
