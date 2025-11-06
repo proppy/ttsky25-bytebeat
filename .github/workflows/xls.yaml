@@ -1,0 +1,39 @@
+name: xls
+
+on:
+  push:
+    paths:
+      - src/**.x
+  workflow_dispatch:
+
+jobs:
+  gds:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/checkout@v5
+      - name: Generate Verilog from DSLX
+        uses: ./.github/actions/xls-action
+        with:
+          xls-version: v0.0.0-8961-gf509bf088
+          dslx-path: src/bytebeat.x
+          dslx-top: bytebeat
+          ir-path: src/bytebeat.ir
+          opt-ir-path: src/bytebeat.opt.ir
+          verilog-path: src/bytebeat.v
+          verilog-module-name: bytebeat
+          verilog-reset-signal-name: reset
+          use-system-verilog: false
+          clock-period-ps: 125000000
+          delay-model: unit
+
+      - name: Commit generated Verilog
+        run: |
+          git add src/bytebeat.v
+          git commit -m "src: re-generate bytebeat.v from DSLX"
+          git push main
+          git push ttsky25b
