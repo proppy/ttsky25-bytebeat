@@ -1,12 +1,17 @@
 // Copyright 2023 Google LLC.
 // SPDX-License-Identifier: Apache-2.0
 
+fn sierpinski(t: u32, a: u4, b: u4, c: u4, d: u4) -> u8 {
+    let s = ((t*a as u32)&(t>>b as u32))|((t*c as u32)&(t>>d as u32));
+    s as u8
+}
+
 struct ByteBeatState {
   a: u4,
   b: u4,
   c: u4,
   d: u4,
-  t: u16,
+  t: u32,
 }
 
 proc bytebeat {
@@ -17,7 +22,7 @@ proc bytebeat {
   output_s: chan<u8> out;
 
   init {
-    ByteBeatState{a: u4:5, b: u4:7, c: u4:3, d: u4:10, t: u16:0}
+    ByteBeatState{a: u4:5, b: u4:7, c: u4:3, d: u4:10, t: u32:0}
   }
 
   config(a_r: chan<u4> in, b_r: chan<u4> in, c_r: chan<u4> in, d_r: chan<u4> in, output_s: chan<u8> out) {
@@ -32,9 +37,9 @@ proc bytebeat {
     let (tok_d, d, _) = recv_non_blocking(tok, d_r, state.d);
     let tok = join(tok_a, tok_b, tok_c, tok_d);
     let t = state.t;
-    let s = ((t*a as u16)&(t>>b as u16))|((t*c as u16)&(t>>d as u16));
+    let s = sierpinski(t, a, b, c, d);
     send(tok, output_s, s as u8);
-    ByteBeatState{a: a, b: b, c: c, d: d, t: t + u16:1}
+    ByteBeatState{a: a, b: b, c: c, d: d, t: t + u32:1}
   }
 }
 
