@@ -10,6 +10,8 @@ on:
 
 jobs:
   xls:
+    permissions:
+      contents: write
     runs-on: ubuntu-24.04
     steps:
       - name: checkout repo
