@@ -35,8 +35,8 @@ jobs:
 
       - name: Commit generated Verilog
         run: |
-          git config --global user.email "<>
-          git config --global user.name "GitHub XLS workflow"          
+          git config --global user.email "<>"
+          git config --global user.name "GitHub XLS workflow"
           git add src/bytebeat.v
           git commit -m "src: re-generate bytebeat.v from DSLX"
           git push main
