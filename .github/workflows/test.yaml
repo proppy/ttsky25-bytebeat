@@ -6,6 +6,8 @@ on:
       - src/**.x
       - .github/workflows/xls.yaml
       - .github/actions/xls/**
+    branches-ignore:
+      - ttsky25b
   workflow_dispatch:
   
 jobs:
