@@ -53,15 +53,5 @@ jobs:
           name: test-vcd
           path: |
             test/tb.vcd
-            test/tb.wav
-            test/tb.png
             test/results.xml
             test/output/*
-
-      - name: upload audio wave
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-wav
-          path: |
-            test/tb.wav
-            test/tb.png
